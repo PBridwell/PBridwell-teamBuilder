@@ -35,30 +35,43 @@ inquirer.prompt({
         if(answerrole.role === "Manager") {
             inquirer.prompt({
                 type: "input",
-                name: "OfficeNumber",
+                name: "unique",
                 message: `What is ${answername.name}'s office number?`
+            }).then(answerrole => {
+                console.log(answerrole.unique)
             })
         }else if (answerrole.role === "Intern") {
             inquirer.prompt({
                 type:"input",
-                name:"school",
+                name:"unique",
                 message:`What school did ${answername.name} attend?`
-            })
-        } else if (answerrole.role === "Engineer") {
+            }).then(answerrole => {
+                console.log(answerrole.unique)
+        })
+    } else if (answerrole.role === "Engineer") {
             inquirer.prompt({
                 type:"input",
-                name:"Github",
+                name:"unique",
                 message:`What is ${answername.name}'s Github username?`
+            }).then(answerrole => {
+                get(answername, answerId, answerrole);
             })
         }
     })
-}).then(answer3 => {
-    console.log(answer3);
-    // console.log(answername.name);
-    // console.log(answerrole.role);
-    // console.log(answerId.id);
+    // .then(answer3 => {
+    //     console.log(answer3);
+    //     // console.log(answername.name);
+    //     // console.log(answerrole.role);
+    //     // console.log(answerId.id);
+    // })
 })
+
 })
+
+function get(answername, answerId, answerrole,) {
+    console.log('test \n', answername.name, answerId.id, answerrole.unique);
+
+}
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
