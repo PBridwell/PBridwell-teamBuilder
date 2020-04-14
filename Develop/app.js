@@ -18,12 +18,18 @@ inquirer.prompt({
     name: "name",
     message: "What is your team member's name?"
 }).then(answername => {
-    console.log(answername.name)
     inquirer.prompt({
-        type: "list",
-        name: "role",
-        message: `What is ${answername.name}'s role?`,
-        choices: ["Manager", "Intern", "Engineer"]
+        type: "input",
+        name: "id",
+        message: `What is ${answername.name}'s ID?`
+     }).then(answerId => {
+         console.log(answerId.id)
+        inquirer.prompt({
+            type: "list",
+            name: "role",
+            message: `What is ${answername.name}'s role?`,
+            choices: ["Manager", "Intern", "Engineer"]
+         
     }).then(answerrole => {
         console.log(answerrole.role)
         if(answerrole.role === "Manager") {
@@ -48,7 +54,10 @@ inquirer.prompt({
     })
 }).then(answer3 => {
     console.log(answer3);
-    
+    // console.log(answername.name);
+    // console.log(answerrole.role);
+    // console.log(answerId.id);
+})
 })
 
 // After the user has input all employees desired, call the `render` function (required
