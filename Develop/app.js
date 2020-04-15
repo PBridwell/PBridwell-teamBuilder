@@ -9,10 +9,12 @@ const OUTPUT_DIR = path.resolve(__dirname, "output")
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
+let team = [];
 
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
+function askQuestions(){
 inquirer.prompt({
     type: "input",
     name: "name",
@@ -23,8 +25,12 @@ inquirer.prompt({
         name: "id",
         message: `What is ${answername.name}'s ID?`
      }).then(answerId => {
-         console.log(answerId.id)
-        inquirer.prompt({
+         inquirer.prompt({
+             type: "input",
+             name: "email",
+             message: `What is ${answername.name}'s email address?`
+         }).then(answerEmail => {
+             inquirer.prompt({
             type: "list",
             name: "role",
             message: `What is ${answername.name}'s role?`,
@@ -39,6 +45,23 @@ inquirer.prompt({
                 message: `What is ${answername.name}'s office number?`
             }).then(answerrole => {
                 console.log(answerrole.unique)
+                const m = new Manager(answername.name, answerId.id, 'manager@email.com', answerrole.unique);
+                console.log(m);
+                team.push(m);
+                console.log('your team', team);
+                inquirer.prompt({
+                    type: 'confirm',
+                    message: "add another?",
+                    name: 'another'
+                }).then(response => {
+                    if (response.another) {
+                        askQuestions();
+                    } else {
+                        render(team);
+                    }
+                })
+
+
             })
         }else if (answerrole.role === "Intern") {
             inquirer.prompt({
@@ -47,14 +70,43 @@ inquirer.prompt({
                 message:`What school did ${answername.name} attend?`
             }).then(answerrole => {
                 console.log(answerrole.unique)
+                const i = new Intern(answername.name, answerId.id, 'intern@email.com', answerrole.unique);
+                console.log(i);
+                team.push(i);
+                console.log('your team', team)
+                inquirer.prompt({
+                    type: 'confirm',
+                    message: "add another?",
+                    name: 'another'
+                }).then(response => {
+                    if (response.another) {
+                        askQuestions();
+                    } else {
+                        render(team);
+                    }
+                })
         })
     } else if (answerrole.role === "Engineer") {
             inquirer.prompt({
                 type:"input",
                 name:"unique",
                 message:`What is ${answername.name}'s Github username?`
-            }).then(answerrole => {
-                get(answername, answerId, answerrole);
+            }).then(answerrole => { 
+                const e = new Engineer(answername.name, answerId.id, 'email@email', answerrole.unique)
+                console.log(e);
+                team.push(e);
+                console.log('your team:', team)
+                inquirer.prompt({
+                    type: 'confirm',
+                    message: "add another?",
+                    name: 'another'
+                }).then(response => {
+                    if (response.another) {
+                        askQuestions();
+                    } else {
+                        render(team);
+                    }
+                })
             })
         }
     })
@@ -67,11 +119,14 @@ inquirer.prompt({
 })
 
 })
-
+})
+}
+askQuestions()
 function get(answername, answerId, answerrole,) {
     console.log('test \n', answername.name, answerId.id, answerrole.unique);
 
 }
+
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
