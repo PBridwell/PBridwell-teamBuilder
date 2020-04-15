@@ -45,7 +45,7 @@ inquirer.prompt({
                 message: `What is ${answername.name}'s office number?`
             }).then(answerrole => {
                 console.log(answerrole.unique)
-                const m = new Manager(answername.name, answerId.id, 'manager@email.com', answerrole.unique);
+                const m = new Manager(answername.name, answerId.id, answerEmail.email, answerrole.unique);
                 console.log(m);
                 team.push(m);
                 console.log('your team', team);
@@ -58,6 +58,7 @@ inquirer.prompt({
                         askQuestions();
                     } else {
                         render(team);
+                        writeHTML(team);
                     }
                 })
 
@@ -70,7 +71,7 @@ inquirer.prompt({
                 message:`What school did ${answername.name} attend?`
             }).then(answerrole => {
                 console.log(answerrole.unique)
-                const i = new Intern(answername.name, answerId.id, 'intern@email.com', answerrole.unique);
+                const i = new Intern(answername.name, answerId.id, answerEmail.email, answerrole.unique);
                 console.log(i);
                 team.push(i);
                 console.log('your team', team)
@@ -83,6 +84,7 @@ inquirer.prompt({
                         askQuestions();
                     } else {
                         render(team);
+                        writeHTML(team);
                     }
                 })
         })
@@ -92,7 +94,7 @@ inquirer.prompt({
                 name:"unique",
                 message:`What is ${answername.name}'s Github username?`
             }).then(answerrole => { 
-                const e = new Engineer(answername.name, answerId.id, 'email@email', answerrole.unique)
+                const e = new Engineer(answername.name, answerId.id, answerEmail.email, answerrole.unique)
                 console.log(e);
                 team.push(e);
                 console.log('your team:', team)
@@ -105,6 +107,8 @@ inquirer.prompt({
                         askQuestions();
                     } else {
                         render(team);
+                        console.log('rendered', team);
+                        writeHTML(team);
                     }
                 })
             })
@@ -120,6 +124,11 @@ inquirer.prompt({
 
 })
 })
+}
+function writeHTML(team) {
+    fs.writeFileSync(outputPath, render(team), 'utf-8');
+    
+      
 }
 askQuestions()
 function get(answername, answerId, answerrole,) {
